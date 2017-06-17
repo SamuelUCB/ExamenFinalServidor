@@ -6,6 +6,7 @@ import com.balance.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,9 @@ public class UserController {
     private PulseHistoryService pulseHistoryService;
     private StepsHistoryService stepsHistoryService;
     private LocationHistoryService locationHistoryService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public void setLocationHistoryService(LocationHistoryService locationHistoryService) {
@@ -84,11 +88,23 @@ public class UserController {
 
 
     @RequestMapping(value = "/admin/changepassword",method = RequestMethod.GET)
-    public String changepassworduser(Model model) {
+    public String changepasswordadmin(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
         return "admin/Password";
+    }
+    
+    @RequestMapping(value = "/admin/changepasswordyes",method = RequestMethod.GET)
+    public String changepasswordadminyes(String password,String passwordconfirm) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        if(password.equals(passwordconfirm)){
+            user.setPassword(bCryptPasswordEncoder.encode(password));
+            userService.saveUserEdited(user);
+            return "redirect:/admin/home";
+        }
+        return "redirect:/admin/changepassword";
     }
 
     @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
@@ -245,6 +261,18 @@ public class UserController {
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
         return "limited/Password";
+    }
+
+    @RequestMapping(value = "/user/changepasswordyes",method = RequestMethod.GET)
+    public String changepassworduseryes(String password,String passwordconfirm) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        if(password.equals(passwordconfirm)){
+            user.setPassword(bCryptPasswordEncoder.encode(password));
+            userService.saveUserEdited(user);
+            return "redirect:/user/home";
+        }
+        return "redirect:/user/changepassword";
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
