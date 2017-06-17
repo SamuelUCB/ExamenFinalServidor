@@ -83,7 +83,6 @@ public class TokenController {
 
         if(token!=null && token.getActive()==true && date_verification.before(token.getExpired_date())){
             User user=userService.getUserById(token.getUser_creator_id());
-            System.out.println(user.getEmail());
             if(user!=null && user.getToken().getId()==token.getId()){
                 return "changepassword";
             }

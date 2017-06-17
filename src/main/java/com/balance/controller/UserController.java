@@ -82,6 +82,15 @@ public class UserController {
         return "admin/userForm";
     }
 
+
+    @RequestMapping(value = "/admin/changepassword",method = RequestMethod.GET)
+    public String changepassworduser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("user",userService.getUserById(user.getId()));
+        return "admin/Password";
+    }
+
     @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public String saveUser(@Valid User user) {
         userService.saveUserEdited(user);
@@ -228,6 +237,14 @@ public class UserController {
         model.addAttribute("bands",bandModelService.listAllBandModels());
 
         return "limited/editProfile";
+    }
+
+    @RequestMapping(value = "/user/changepassword",method = RequestMethod.GET)
+    public String changepassword(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("user",userService.getUserById(user.getId()));
+        return "limited/Password";
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
