@@ -1,5 +1,6 @@
 package com.balance.model;
 
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -54,6 +55,8 @@ public class User {
 	private int heigth;
 
 	private int age;
+
+	private Date birthday;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "token_id")
@@ -167,5 +170,11 @@ public class User {
 		this.terminal = terminal;
 	}
 
+	public Date getBirthday() {
+		return birthday;
+	}
 
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 }
