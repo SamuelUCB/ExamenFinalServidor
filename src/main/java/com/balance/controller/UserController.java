@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 @Controller
@@ -202,8 +203,7 @@ public class UserController {
     }
 
 
-
-        //LimitedUser Controller--------------------------------------------------------
+    //LimitedUser Controller--------------------------------------------------------
 
     @RequestMapping(value = "/user/profile",method = RequestMethod.GET)
     public String viewProfile(Model model) {
@@ -375,5 +375,41 @@ public class UserController {
         }
 
         return "limited/mapLastLocation";
+    }
+
+
+    @RequestMapping(value = "/user/dayLocations", method = RequestMethod.GET)
+    public String getDayLocations(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        Date fechaactual=new Date();
+        int cantidad = 0;
+        ArrayList<Float> listLatitud = new ArrayList<>();
+        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<String> listName = new ArrayList<>();
+        while(iterator.hasNext()){
+            LocationHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                if(aux.getUser().equals(user.getId()) &&
+                        aux.getDate().getDay()==fechaactual.getDay() &&
+                        aux.getDate().getMonth()==fechaactual.getMonth() &&
+                        aux.getDate().getYear()==fechaactual.getYear() ) {
+                            cantidad++;
+                            listLatitud.add(aux.getLatitude());
+                            listLongitud.add(aux.getLongitude());
+                            listName.add("Location " + cantidad);
+                }
+            }
+        }
+        System.out.println(listName);
+
+
+        model.addAttribute("latitudes", listLatitud);
+        model.addAttribute("longitudes", listLongitud);
+        model.addAttribute("titulos", listName);
+
+
+        return "limited/mapDayLocations";
     }
 }
