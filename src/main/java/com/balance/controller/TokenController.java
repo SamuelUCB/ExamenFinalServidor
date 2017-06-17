@@ -1,6 +1,7 @@
 package com.balance.controller;
 
 import com.balance.Mail.SmtpMailSender;
+import com.balance.configuration.WebMvcConfig;
 import com.balance.model.Token;
 import com.balance.model.User;
 import com.balance.service.TokenService;
@@ -16,6 +17,7 @@ import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
+import java.util.Date;
 
 /**
  * Created by da_20 on 4/6/2017.
@@ -23,19 +25,27 @@ import java.security.SecureRandom;
 @Controller
 public class TokenController {
 
-    @Autowired
-    private UserService userService;
     private TokenService tokenService;
 
     @Autowired
     private SmtpMailSender smtpMailSender;
 
     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
-    @RequestMapping(value="/forgot", method = RequestMethod.GET)
+    @RequestMapping(value="/forgotpassword", method = RequestMethod.GET)
     public String forgotpassword(){
         return "forgot";
     }
@@ -44,48 +54,57 @@ public class TokenController {
     public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
         String text1= request.getParameter("email");
         if(userService.findUserByEmail(request.getParameter("email"))!=null){
+            //Crear token
             SecureRandom random = new SecureRandom();
-            byte bytes[] = new byte[10];
-            random.nextBytes(bytes);
-            String token = bytes.toString();
-            Token t=new Token(token);
-            t.setUser(userService.findUserByEmail(request.getParameter("email")));
+            long longToken = Math.abs( random.nextLong() );
+            String stringToken = Long.toString(longToken,16);
+            Token t=new Token(stringToken);
+            User userExist=userService.findUserByEmail(request.getParameter("email"));
+            t.setUser_creator_id(userExist.getId());
+
+            //modificar token
             tokenService.saveToken(t);
-            User user=userService.findUserByEmail(request.getParameter("email"));
-            user.setToken(t);
-            userService.saveUser(user);
-            smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "<a href='http://localhost:8080/changepassword/ "+ token + " ' > Change password </a>");
+
+            userExist.setToken(t);
+            userService.saveUserEdited(userExist);
+
+            //Enviar mail
+            smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "<a href='http://localhost:8080/forgotpasswordconfirm/" + stringToken +" ' > Change password </a>");
             return "redirect:/";
         }
-        return "redirect:/forgot";
+        return "redirect:/forgotpassword";
     }
-    @RequestMapping(value="/changepassword/{token}", method = RequestMethod.GET)
-    public String changepassword(@PathVariable String token) {
-        Token t=tokenService.findByToken("[B@"+token.substring(4));
-        if(t!=null && t.getActive()!=false && t.getUser()!=null){
-            return "changepassword";
+
+    @RequestMapping(value="/forgotpasswordconfirm/{tokenS}", method = RequestMethod.GET)
+    public String changepassword(@PathVariable String tokenS) {
+        Token token=tokenService.findTokenByToken(tokenS);
+
+        Date date_verification=new Date();
+
+        if(token!=null && token.getActive()==true && date_verification.before(token.getExpired_date())){
+            User user=userService.getUserById(token.getUser_creator_id());
+            System.out.println(user.getEmail());
+            if(user!=null && user.getToken().getId()==token.getId()){
+                return "changepassword";
+            }
+            return "redirect:/";
         }
         return "redirect:/";
     }
 
     @RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-    public String changepasswordyes(String email,String password) {
+    public String changePasswordInForgot(String email,String password) {
         User userExists = userService.findUserByEmail(email);
         if (userExists != null) {
-            System.out.println("Llego aqui");
-            if(!userExists.getToken().equals(null)){
-                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-                userExists.setPassword(bCryptPasswordEncoder.encode(password));
-                tokenService.getTokenById(userExists.getToken().getId()).setActive(false);
-                Integer id=tokenService.getTokenById(userExists.getToken().getId()).getId();
-                tokenService.getTokenById(userExists.getToken().getId()).setUser(null);
-                userExists.setToken(null);
-                tokenService.deleteToken(id);
-                userExists.setToken(null);
-                userService.saveUser(userExists);
-                return "redirect:/";
-            }
+            //  Encriptando password
+            userExists.setPassword(bCryptPasswordEncoder.encode(password));
+            userService.saveUserEdited(userExists);
+            //deshabilitando token
+            Token t=tokenService.getTokenById(userExists.getToken().getId());
+            t.setActive(false);
+            tokenService.saveToken(t);
+            return "redirect:/";
         }
-        return "redirect:changepassword";
+        return "redirect:changepasswordyes";
     }
 }

@@ -45,8 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/").permitAll()
-                .antMatchers("/forgot").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/forgotpassword").permitAll()
                 .antMatchers("/bands").permitAll()
                 .antMatchers("/band").permitAll()
 				.antMatchers("/locations").permitAll()
@@ -60,7 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/getPulse/**").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/send-mail").permitAll()
-                .antMatchers("/changepassword/**").permitAll()
+                .antMatchers("/forgotpasswordconfirm/**").permitAll()
+                .antMatchers("/changepassword").permitAll()
                 .antMatchers("/changepasswordyes").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")			//.anyRequest().authenticated()
                 .antMatchers("/user/**").hasAuthority("LIMITED")		//.anyRequest().authenticated()

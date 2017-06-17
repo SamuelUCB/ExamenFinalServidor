@@ -58,19 +58,19 @@ public class User {
 
 	private Date birthday;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "token_id")
-	private Token token;
+    @ManyToOne
+    @JoinColumn(name = "token_id")
+	private Token tokenId;
 
-	public Token getToken() {
-		return token;
-	}
+    public Token getToken() {
+        return tokenId;
+    }
 
-	public void setToken(Token token) {
-		this.token = token;
-	}
+    public void setToken(Token tokenId) {
+        this.tokenId = tokenId;
+    }
 
-	public String getBand() {
+    public String getBand() {
 		return band;
 	}
 

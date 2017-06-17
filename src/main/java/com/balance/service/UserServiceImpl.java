@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.balance.model.Terminal;
+import com.balance.model.Token;
 import com.balance.repository.TerminalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public User findByTokenId(Integer token_id) {
+		return userRepository.findByTokenId(token_id);
 	}
 
 	@Override

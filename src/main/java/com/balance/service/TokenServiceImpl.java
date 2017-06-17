@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
  */
 @Service("TokenService")
 public class TokenServiceImpl implements TokenService {
+
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Override
+    public Token findTokenByToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
 
     @Override
     public void saveToken(Token token) {
@@ -32,11 +38,4 @@ public class TokenServiceImpl implements TokenService {
     public void deleteToken(Integer id) {
         tokenRepository.delete(id);
     }
-
-    @Override
-    public Token findByToken(String token) {
-        return tokenRepository.findByToken(token);
-    }
-
-
 }
