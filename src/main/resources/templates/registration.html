@@ -29,17 +29,16 @@
 			<input type="password" th:field="*{password}" placeholder="Password" /><br/>
 			<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" /><br/>
 
-			<br/><label>Band model:</label><br/>
+			<label>Band model:</label><br/>
 			<select th:field="*{band}">
 				<option th:each="band : ${bands}"
 						th:value="${band.getName()}"
 						th:text="${band.getName()}"></option>
 			</select>
-
-			<p>Serial: </p>
-			<input type="text" th:field="*{terminal}"/>
-
 			<br/>
+			<label>Serial: </label><br/>
+			<input type="number" min="1" th:field="*{terminal}"/><br/>
+			<label th:text="${errorTerminal}"></label><br/>
 
 			<input type="submit" name="submit" value="Register User"/>
 			<label th:text="${successMessage}"></label>

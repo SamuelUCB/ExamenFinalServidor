@@ -1,7 +1,9 @@
 package com.balance.service;
 
 import com.balance.model.Terminal;
+import com.balance.model.User;
 import com.balance.repository.TerminalRepository;
+import com.balance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class TerminalServiceImpl implements TerminalService {
 
     @Autowired
     private TerminalRepository terminalRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
 
     @Override
     public void saveTerminal(Terminal Terminal) {
@@ -50,12 +57,27 @@ public class TerminalServiceImpl implements TerminalService {
     public Terminal getTerminalBySerial(int serial){
         Iterator<Terminal> iterator=terminalRepository.findAll().iterator();
         while(iterator.hasNext()){
-            if(serial==iterator.next().getSerial()) {
-                return iterator.next();
+            Terminal auxT = iterator.next();
+            if(serial==auxT.getSerial()) {
+                return auxT;
             }
         }
         return null;
     }
 
-
+    @Override
+    public void saveTerminalEdited(Terminal terminalNew,Terminal terminalOld){
+       /* Iterator<User> iterator=userRepository.findAll().iterator();
+        while(iterator.hasNext()){
+            User auxU = iterator.next();
+            if(terminalOld.getSerial()==auxU.getTerminal().getSerial()) {
+                auxU.setTerminal(terminalNew);
+                auxU.setBand(terminalNew.getBandModel().getName());
+                userRepository.save(auxU);
+                break;
+            }
+        }
+        terminalRepository.delete(terminalOld.getSerial());
+        terminalRepository.save(terminalNew);*/
+    }
 }

@@ -14,4 +14,6 @@ public interface TerminalService {
 
     void setActiveTerminalById(Integer id);
     Terminal getTerminalBySerial(int serial);
+
+    void saveTerminalEdited(Terminal terminalNew,Terminal terminalOld);
 }

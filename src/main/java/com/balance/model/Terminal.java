@@ -1,6 +1,11 @@
 package com.balance.model;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Set;
 
 /**
@@ -19,7 +24,7 @@ public class Terminal {
     @OneToOne(mappedBy = "terminal")
     private User user;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="band_model_id")
     private BandModel bandModel;
 

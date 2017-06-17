@@ -139,9 +139,67 @@ public class UserController {
     }
 
 
+    @RequestMapping(value = "/admin/terminals",method = RequestMethod.GET)
+    public String listTerminals(Model model){
+        model.addAttribute("terminals",terminalService.listAllTerminals());
+        return "admin/terminals";
+    }
 
+    @RequestMapping(value="/admin/terminal/edit/{id}",method =RequestMethod.GET)
+    public String editTerminal(@PathVariable Integer id,Model model){
+        model.addAttribute("terminal",terminalService.getTerminalById(id));
+        model.addAttribute("bands",bandModelService.listAllBandModels());
+        terminalService.saveTerminal(terminalService.getTerminalById(id));
+        return "admin/terminalForm";
+    }
 
+    @RequestMapping(value = "/admin/terminal/{id}", method = RequestMethod.POST)
+    public String saveTerminal(@Valid Terminal terminal,BindingResult bindingResult,@PathVariable Integer id,Model model) {
+        //obteniendo antigua terminal y su usuario
+       Terminal terminalOld = terminalService.getTerminalById(id);
+       User user = terminalOld.getUser();
+       //quitando la terminal al usuario
+       if (user != null) {
+           user.setTerminal(null);
+           userService.saveUserEdited(user);
+       }
+        model.addAttribute("bands", bandModelService.listAllBandModels());
 
+       if(!bindingResult.hasErrors()) {
+           if (terminal == null) {
+               model.addAttribute("errorTerminal", "The serial field was empty");
+           } else {
+               //borrando la anterior terminal
+               terminalService.deleteTerminal(id);
+               if (terminalService.getTerminalById(terminal.getSerial()) != null) {
+                   model.addAttribute("errorTerminal", "That serial already exists");
+               } else {
+                   //darle al usuario de la antigua terminal la nueva
+                   if (user != null) {
+                       user.setTerminal(terminal);
+                       user.setBand(terminal.getBandModel().getName());
+                       userService.saveUserEdited(user);
+                   }
+                   terminalService.saveTerminal(terminal);
+                   return "redirect:/admin/terminals";
+               }
+           }
+       }else{
+           model.addAttribute("errorTerminal", "The serial field was empty");
+       }
+       //si fallo devolverle la terminal anterior a su respectivo usuario
+       if (user != null) {
+           user.setTerminal(terminalOld);
+           user.setBand(terminalOld.getBandModel().getName());
+           userService.saveUserEdited(user);
+       }
+       //guardando la antigua terminal por fallo
+       terminalService.saveTerminal(terminalOld);
+       model.addAttribute("terminal", terminal);
+       model.addAttribute("id", id);
+
+        return "admin/terminalForm";
+    }
 
 
 
@@ -163,10 +221,9 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
-
+        model.addAttribute("terminalUser",userService.getUserById(user.getId()).getTerminal());
         Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getSerial());
         ant.setActive(false);
-
         terminalService.saveTerminal(ant);
         model.addAttribute("bands",bandModelService.listAllBandModels());
 
@@ -174,26 +231,27 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
-    public String saveLimitedUser(@Valid User user, BindingResult bindingResult) {
-        if(user.getTerminal()==null) {
-            return "redirect:/user/edit";
+    public String saveLimitedUser(@Valid User user, BindingResult bindingResult,Model model) {
+        model.addAttribute("bands",bandModelService.listAllBandModels());
+
+        if(!bindingResult.hasErrors()){
+            if(user.getTerminal()==null){
+                model.addAttribute("errorTerminal","The serial doesn't exist or the serial field was empty");
+            }else if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
+                model.addAttribute("errorTerminal","That serial does not match the band model");
+            }else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
+                model.addAttribute("errorTerminal", "That serial is already in use");
+            }else{
+
+                user.getTerminal().setActive(true);
+                terminalService.saveTerminal(user.getTerminal());
+                user.setTerminal(user.getTerminal());
+                userService.saveUserEdited(user);
+                return "redirect:/user/profile/";
+            }
         }
-        Terminal newTerminal = terminalService.getTerminalById(user.getTerminal().getSerial());
+        return "limited/editProfile";
 
-        if(!newTerminal.getBandModel().getName().equals(user.getBand()) || newTerminal.isActive()){
-            return "redirect:/user/edit";
-        }
-
-        if(bindingResult.hasErrors()) {
-            return "limited/editProfile";
-        }
-
-        newTerminal.setActive(true);
-        terminalService.saveTerminal(newTerminal);
-        user.setTerminal(newTerminal);
-
-        userService.saveUserEdited(user);
-        return "redirect:/user/profile/";
     }
 
 

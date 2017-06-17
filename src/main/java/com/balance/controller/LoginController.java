@@ -9,7 +9,9 @@ import javax.validation.Valid;
 import com.balance.Mail.SmtpMailSender;
 import com.balance.model.*;
 import com.balance.service.*;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.SecureRandom;
+import java.security.Security;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,23 +79,24 @@ public class LoginController {
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String createNewUser(@Valid User user, BindingResult bindingResult, Model model) {
 		User userExists = userService.findUserByEmail(user.getEmail());
+		model.addAttribute("bands",bandModelService.listAllBandModels());
 		if (userExists != null) {
 			bindingResult.rejectValue("email", "error.user", "There is already a user registered with the email provided");
 		}
-		if(user.getTerminal()==null){
-			return "redirect:/registration";
-		}
-		if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
-			return "redirect:/registration";
-		}
-		if (!bindingResult.hasErrors() && !terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
-			userService.saveUser(user);
-			model.addAttribute("successMessage", "El usuario se registro correctamente");
-			model.addAttribute("user", new User());
-		}else{
-			return "redirect:/registration";
-		}
 
+		if(!bindingResult.hasErrors()) {
+            if(user.getTerminal()==null){
+				model.addAttribute("errorTerminal","The serial doesn't exist or the serial field was empty");
+			}else if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
+                    model.addAttribute("errorTerminal","That serial does not match the model band");
+				}else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
+                model.addAttribute("errorTerminal", "That serial is already in use");
+            }else{
+                userService.saveUser(user);
+                model.addAttribute("successMessage", "El usuario se registro correctamente");
+                model.addAttribute("user", new User());
+            }
+		}
 		return "registration";
 	}
 

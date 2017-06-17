@@ -9,8 +9,13 @@
 			<button name="registration" type="Submit">Logout</button>
 		</form>
 
+
 		<label th:text="${userName}"></label>
 		<p th:text="${adminMessage}"></p>
+
+		<form th:action="@{/admin/terminals}" method="get">
+			<button name="listTerminals" type="Submit">Terminals</button>
+		</form>
 
 		<h2>User List</h2>
 		<table class="table table-striped">

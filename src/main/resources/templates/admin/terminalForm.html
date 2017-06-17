@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>User</title>
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<form th:action="@{/admin/terminals}" method="get">
+    <button name="registration" type="Submit">Terminals</button>
+</form>
+<div class="container">
+    <h2>Terminal</h2>
+    <div>
+        <form class="form-horizontal" th:object="${terminal}" th:action="@{'/admin/terminal/'+${id}}" method="POST">
+            <input type="hidden" th:field="*{user}"/>
+            <div>
+                <label class="col-sm-2 control-label">Serial:</label><br/>
+                <input type="number" min="1" th:field="*{serial}"/><br/>
+                <label th:text="${errorTerminal}"/><br/>
+
+
+                <label class="col-sm-2 control-label">Band model:</label><br/>
+                <select th:field="*{bandModel}">
+                    <option th:each="bandModel : ${bands}"
+                            th:value="${bandModel.getId()}"
+                            th:text="${bandModel.getName()}"></option>
+                </select>
+                <br/>
+
+
+                <label class="col-sm-2 control-label">Active:</label><br/>
+                <input type="checkbox" th:field="*{active}" th:value="*{active}" /><br/>
+
+            </div>
+
+
+            <div class="row">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
