@@ -32,23 +32,23 @@
             <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" /><br/>
 
 
-            <p>Altura: </p>
-            <input type="number"  th:field="*{heigth}"/>
+            <label>Altura:</label><br/>
+            <input type="number"  th:field="*{heigth}"/><br/>
 
-            <p>Peso: </p>
-            <input type="number"  th:field="*{weigth}"/>
+            <label>Peso:</label><br/>
+            <input type="number"  th:field="*{weigth}"/><br/>
 
-            <p>Edad: </p>
-            <input type="number"  th:field="*{age}"/>
+            <label>Edad:</label><br/>
+            <input type="number"  th:field="*{age}"/><br/>
 
             <br/><label>Modelo de banda:</label><br/>
             <select th:field="*{band}">
                 <option th:each="bandModel : ${bands}"
                         th:value="${bandModel.getName()}"
                         th:text="${bandModel.getName()}"></option>
-            </select>
+            </select><br/>
 
-            <p>Serial: </p>
+            <label>Serial:</label><br/>
             <input type="text" th:field="*{terminal}"/>
             <label th:text="${errorTerminal}"/><br/>
 
