@@ -23,6 +23,8 @@
         <p th:text="${user.email}">email</p>
         <label>Edad:</label>
         <p th:text="${user.age}">age</p>
+        <label>Fecha de nacimiento:</label>
+        <p th:text="${user.birthday}">birthday</p>
         <label>Altura:</label>
         <p th:text="${user.heigth}">heigth</p>
         <label>Peso:</label>
@@ -31,9 +33,6 @@
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getBandModel().getName()}">Model band</p>
         <label>Serial:</label>
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getSerial()}">Serial</p>
-
-
-
 
     </div>
 </div>
