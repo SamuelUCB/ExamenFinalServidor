@@ -86,21 +86,26 @@ public class LoginController {
 
 		if(!bindingResult.hasErrors()) {
             if(user.getTerminal()==null){
-				model.addAttribute("errorTerminal","The serial doesn't exist or the serial field was empty");
+				model.addAttribute("errorTerminal","El serial no existe o el campo serial esta vacio");
 			}else if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
-                    model.addAttribute("errorTerminal","That serial does not match the model band");
+                    model.addAttribute("errorTerminal","El serial no concuerda con el modelo de banda");
 				}else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
-                model.addAttribute("errorTerminal", "That serial is already in use");
+                model.addAttribute("errorTerminal", "El serial ya fue activado");
             }else{
-				Date birthday=new Date();
-				Integer age=birthday.getYear()-user.getBirthday().getYear();
-				if(birthday.getMonth()-user.getBirthday().getMonth()<0){
-					age--;
+				User userTerminal=terminalService.getTerminalById(user.getTerminal().getSerial()).getUser();
+				if(userTerminal!=null){
+					model.addAttribute("errorTerminal", "El serial ya esta en uso");
+				}else{
+					Date birthday=new Date();
+					Integer age=birthday.getYear()-user.getBirthday().getYear();
+                    if(birthday.getMonth()-user.getBirthday().getMonth()<0){
+                        age--;
+                    }
+					user.setAge(age);
+					userService.saveUser(user);
+					model.addAttribute("successMessage", "El usuario se registro correctamente");
+					model.addAttribute("user", new User());
 				}
-				user.setAge(age);
-                userService.saveUser(user);
-                model.addAttribute("successMessage", "El usuario se registro correctamente");
-                model.addAttribute("user", new User());
             }
 		}
 		return "registration";

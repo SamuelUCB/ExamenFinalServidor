@@ -26,15 +26,16 @@
             <input type="hidden" th:field="*{name}"/>
             <input type="hidden" th:field="*{lastName}"/>
             <input type="hidden" th:field="*{roles}"/>
+            <input type="hidden" th:field="*{terminal}"/>
+            <input type="hidden" th:field="*{band}"/>
             <input type="hidden" th:field="*{weigth}"/>
             <input type="hidden" th:field="*{heigth}"/>
             <input type="hidden" th:field="*{age}"/>
-            <input type="hidden" th:field="*{terminal}"/>
-            <label class="col-sm-2 control-label">Cuenta activa:</label>
+            <input type="hidden" th:field="*{birthday}"/>
+            <label class="col-sm-2 control-label">Cuenta activa:</label><br/>
             <input type="checkbox" th:field="*{active}" th:value="*{active}" />
-           <br></br>
-            <br></br>
-
+            <br/>
+            <br/>
             <button type="submit" class="btn btn-default">Aceptar</button>
 
         </form>
