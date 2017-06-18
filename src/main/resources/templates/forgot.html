@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>recover password</title>
+    <title>Recupera tu cuenta</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
-<form th:action="@{/}" method="get">
-    <button type="Submit">Return To Login</button>
-</form>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="${'/'}">Regresar a Login</a>
+        </div>
+    </div>
 
-<h3 th:text="Email"></h3><br/>
+</nav>
+<div class="container">
+<h3 >Ingrese su email</h3><br/>
 
 <form th:action="@{/send-mail}" method="get">
-    <input th:placeholder="Email" type="text" id="email" name="email" /> <br/>
+    <label>Email: </label><br/>
+    <input th:placeholder="Email" type="text" id="email" name="email" /> <br/><br/>
 
-    <input type="submit" name="submit" value="Send Mail"/>
+    <button type="submit" class="btn btn-default">Enviar email de recuperación</button>
 </form>
-
+</div>
 </body>
 </html>
