@@ -1,11 +1,13 @@
 body{
-    background: url(images/secundarios2.jpg) no-repeat center center fixed;
+            background: url(images/admin.jpg) no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            }
 }
-h3,label{
-       color:#FFFFFF;
+#listas{
+    background:#BFC9CA;
+}
+h2,label{
+    color:#566573;
 }

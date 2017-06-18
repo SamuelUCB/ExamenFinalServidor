@@ -3,25 +3,9 @@
 	<head>
 		<title>Login</title>
 		<link href="/css/Estilo.css" th:href="@{/css/Estilo.css}" rel="stylesheet" media="screen"/>
+        <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet" media="screen"/>
         <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 	</head>
-    <style>
-        body{
-            background: url(images/principal.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            }
-          #titulo{
-          border-radius: 31px 31px 31px 31px;
-            -moz-border-radius: 31px 31px 31px 31px;
-         -webkit-border-radius: 31px 31px 31px 31px;
-        border: 8px groove #f2edf2;
-        background:#000000;
-
-          }
-    </style>
 	<body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -32,16 +16,18 @@
 
     </nav>
         <div id="titulo" class="centralizar">
-		<p  style="font-size:30pt; color:#ACEDFB; font-family: impact;">Balance fitness tracker</p>
+		<p  id="titleB">Balance fitness tracker</p>
         </div>
 		<form class="centralizar" th:action="@{/login}" method="POST">
 			<fieldset class="reducirFormulario">
+                <br/><br/>
 				<input class="centralizar" th:placeholder="Email" type="text" id="email" name="email"  /> <br/><br/>
 				<input class="centralizar" th:placeholder="Password" type="password" id="password" name="password" /> <br /><br/>
 				<div th:if="${param.error}">
-					<p>Email o Contraseña invalidos</p>
+					<p id="mensajedeerror">Email o Contraseña invalidos</p>
 				</div>
-				<input class="estiloBoton" type="submit" name="submit" value="Login"/> <br /><br/>
+                <button type="submit" class="btn">Login</button>
+				 <br /><br/>
                 <a th:href="${'/forgotpassword'}">¿Olvidó su contraseña?</a>
 			</fieldset>
 

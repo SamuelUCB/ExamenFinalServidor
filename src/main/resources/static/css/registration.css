@@ -3,3 +3,11 @@
 	font-size: 12px;
 	color: #FF1C19;
 }
+body{
+            background: url(images/secundarios.jpeg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+
+            }

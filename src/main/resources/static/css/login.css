@@ -34,4 +34,28 @@ input[type="password"] {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+body{
+            background: url(images/principal.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            }
+#titulo{
+          border-radius: 31px 31px 31px 31px;
+            -moz-border-radius: 31px 31px 31px 31px;
+         -webkit-border-radius: 31px 31px 31px 31px;
+        border: 8px groove #f2edf2;
+        background:#000000;
 
+          }
+
+#titleB{
+font-size:30pt;
+ color:#ACEDFB;
+  font-family: impact;
+}
+#mensajedeerror{
+    color:#FFFFFF;
+    font-family: impact;
+}

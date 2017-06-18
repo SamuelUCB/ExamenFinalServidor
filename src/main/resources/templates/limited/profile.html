@@ -3,6 +3,7 @@
 <head lang="en">
     <title>Perfil</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <link href="/css/editProfile.css" th:href="@{/css/editProfile.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -16,19 +17,19 @@
 
 <div class="container">
     <div>
-        <h3> Nombre: </h3>
+        <label> Nombre: </label>
         <p th:text="${user.name}">name</p>
-        <h3>Email:</h3>
+        <label>Email:</label>
         <p th:text="${user.email}">email</p>
-        <h3>Edad:</h3>
+        <label>Edad:</label>
         <p th:text="${user.age}">age</p>
-        <h3>Altura:</h3>
+        <label>Altura:</label>
         <p th:text="${user.heigth}">heigth</p>
-        <h3>Peso:</h3>
+        <label>Peso:</label>
         <p th:text="${user.weigth}">weigth</p>
-        <h3>Modelo de banda:</h3>
+        <label>Modelo de banda:</label>
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getBandModel().getName()}">Model band</p>
-        <h3>Serial:</h3>
+        <label>Serial:</label>
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getSerial()}">Serial</p>
 
 

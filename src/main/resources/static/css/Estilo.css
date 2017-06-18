@@ -94,11 +94,11 @@ li.bloqueBoton a:hover {
 }
 
 .estiloBoton:hover {
-	background-color: #000000;
+	background-color: #A6ACAF;
 }
 
 .estiloMapa {
     width: auto;
     height: 400px;
-    background: black;
+    background: #A6ACAF;
 }
