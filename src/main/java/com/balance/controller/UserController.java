@@ -197,12 +197,12 @@ public class UserController {
 
        if(!bindingResult.hasErrors()) {
            if (terminal == null) {
-               model.addAttribute("errorTerminal", "The serial field was empty");
+               model.addAttribute("errorTerminal", "El campo serial no puede estar vacio");
            } else {
                //borrando la anterior terminal
                terminalService.deleteTerminal(id);
                if (terminalService.getTerminalById(terminal.getSerial()) != null) {
-                   model.addAttribute("errorTerminal", "That serial already exists");
+                   model.addAttribute("errorTerminal", "El serial ya existe");
                } else {
                    //darle al usuario de la antigua terminal la nueva
                    if (user != null) {
@@ -215,7 +215,7 @@ public class UserController {
                }
            }
        }else{
-           model.addAttribute("errorTerminal", "The serial field was empty");
+           model.addAttribute("errorTerminal", "El campo serial no puede estar vacio");
        }
        //si fallo devolverle la terminal anterior a su respectivo usuario
        if (user != null) {
@@ -288,22 +288,22 @@ public class UserController {
         if(!bindingResult.hasErrors()) {
             for(AgeRange aux:list){
                 if(aux.getAge()==ageRange.getAge() && aux.getId()!=ageRange.getId()){
-                    model.addAttribute("errorAgeRange","That age is already registered");
+                    model.addAttribute("errorAgeRange","El rango para esa edad ya esta registrada");
                     return "admin/ageRangeForm";
                 }
             }
-            if(ageRange.getMetaStart()>ageRange.getMetaFinish()){
-                model.addAttribute("errorAgeRange","The values of meta are invalids");
+            if(ageRange.getMetaStart()>=ageRange.getMetaFinish()){
+                model.addAttribute("errorAgeRange","Los valores meta estan incorrectos, dato: el meta de inicio debe ser menor al meta final");
             }else{
-                if(ageRange.getMaximum()<ageRange.getMetaStart() || ageRange.getMaximum()<ageRange.getMetaFinish()){
-                    model.addAttribute("errorAgeRange","The value of maximum is invalid");
+                if(ageRange.getMaximum()<=ageRange.getMetaStart() || ageRange.getMaximum()<=ageRange.getMetaFinish()){
+                    model.addAttribute("errorAgeRange","El valor maximo es incorrecto, dato: el valor maximo debe ser mayor a los valores meta");
                 }else{
                     ageRangeService.saveAgeRange(ageRange);
                     return "redirect:/admin/ranges";
                 }
             }
         }else{
-            model.addAttribute("errorAgeRange","Some value is empty");
+            model.addAttribute("errorAgeRange","No se admiten campos vacio");
         }
         return "admin/ageRangeForm";
     }
@@ -364,11 +364,11 @@ public class UserController {
 
         if(!bindingResult.hasErrors()){
             if(user.getTerminal()==null){
-                model.addAttribute("errorTerminal","The serial doesn't exist or the serial field was empty");
+                model.addAttribute("errorTerminal","El serial no existe o el campo de serial estaba vacio");
             }else if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
-                model.addAttribute("errorTerminal","That serial does not match the band model");
+                model.addAttribute("errorTerminal","El serial no concuerda con el modelo de banda");
             }else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
-                model.addAttribute("errorTerminal", "That serial is already in use");
+                model.addAttribute("errorTerminal", "El serial ya esta en uso");
             }else{
 
                 user.getTerminal().setActive(true);
@@ -377,6 +377,8 @@ public class UserController {
                 userService.saveUserEdited(user);
                 return "redirect:/user/profile/";
             }
+        }else{
+            model.addAttribute("errorTerminal","Formato de serial invalido, no se introdujo un valor numerico de serial correcto");
         }
         return "limited/editProfile";
 

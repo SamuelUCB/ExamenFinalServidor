@@ -20,18 +20,23 @@
     <div>
         <form class="form-horizontal" th:object="${terminal}" th:action="@{'/admin/terminal/'+${id}}" method="POST">
             <input type="hidden" th:field="*{user}"/>
-            <label class="col-sm-2 control-label">Serial:</label>
-            <input type="number" min="1" th:field="*{serial}"/><br/><br/>
-            <label th:text="${errorTerminal}"/>
-            <label class="col-sm-2 control-label">Modelo de banda:</label>
+
+            <label class="col-sm-2 control-label">Serial:</label><br/>
+            <input type="number" min="1" th:field="*{serial}"/>
+            <label th:text="${errorTerminal}"/><br/><br/>
+
+            <label class="col-sm-2 control-label">Modelo de banda:</label><br/>
             <select th:field="*{bandModel}">
                 <option th:each="bandModel : ${bands}"
                         th:value="${bandModel.getId()}"
                         th:text="${bandModel.getName()}"></option>
             </select><br/><br/>
-            <label class="col-sm-2 control-label">Activo:</label>
+
+            <label class="col-sm-2 control-label">Activo:</label><br/>
             <input type="checkbox" th:field="*{active}" th:value="*{active}" /><br/><br/>
+
             <button type="submit" class="btn btn-default">Aceptar</button>
+
         </form>
     </div>
 </div>
