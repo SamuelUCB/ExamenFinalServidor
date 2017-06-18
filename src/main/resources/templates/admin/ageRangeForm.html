@@ -24,17 +24,17 @@
 <form th:action="@{/admin/ageRange}" th:object="${ageRange}" method="post">
     <input type="hidden" th:field="*{id}" />
     <label>Edad</label><br/>
-    <input type="number" min="1" th:field="*{age}" placeholder="age" /><br/>
+    <input type="number" min="1" th:field="*{age}" placeholder="Edad" /><br/>
 
     <label>Meta</label><br/>
     <label>Meta de inicio</label><br/>
-    <input type="number" min="1" th:field="*{metaStart}" placeholder="metaStart" /><br/>
+    <input type="number" min="1" th:field="*{metaStart}" placeholder="Meta inicio" /><br/>
 
     <label>Meta final</label><br/>
-    <input type="number" min="1" th:field="*{metaFinish}" placeholder="metaFinish" /><br/>
+    <input type="number" min="1" th:field="*{metaFinish}" placeholder="Meta final" /><br/>
 
     <label>Máximo</label><br/>
-    <input type="number" min="1" th:field="*{maximum}" placeholder="maximum" /><br/>
+    <input type="number" min="1" th:field="*{maximum}" placeholder="Maximo" /><br/>
     <br/>
     <label th:text="${errorAgeRange}"></label><br/>
     <button type="submit" class="btn btn-default">Registrar</button>
