@@ -94,6 +94,9 @@ public class LoginController {
             }else{
 				Date birthday=new Date();
 				Integer age=birthday.getYear()-user.getBirthday().getYear();
+				if(birthday.getMonth()-user.getBirthday().getMonth()<0){
+					age--;
+				}
 				user.setAge(age);
                 userService.saveUser(user);
                 model.addAttribute("successMessage", "El usuario se registro correctamente");

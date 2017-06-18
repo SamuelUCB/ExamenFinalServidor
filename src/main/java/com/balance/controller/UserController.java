@@ -376,6 +376,9 @@ public class UserController {
                 user.setTerminal(user.getTerminal());
                 Date birthday=new Date();
                 Integer age=birthday.getYear()-user.getBirthday().getYear();
+                if(birthday.getMonth()-user.getBirthday().getMonth()<0){
+                    age--;
+                }
                 user.setAge(age);
                 userService.saveUserEdited(user);
                 return "redirect:/user/profile/";
