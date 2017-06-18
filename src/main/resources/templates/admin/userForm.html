@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>User</title>
+    <title>Estado del usuario</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form th:action="@{/admin/home}" method="get">
-    <button name="registration" type="Submit">Home</button>
-</form>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="${'/admin/home'}">Inicio</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container">
-    <h2>Active user</h2>
+    <h2>Estado del usuario</h2>
     <div>
         <form class="form-horizontal" th:object="${user}" th:action="@{/admin/user}" method="POST">
             <input type="hidden" th:field="*{id}"/>
@@ -22,15 +29,13 @@
             <input type="hidden" th:field="*{heigth}"/>
             <input type="hidden" th:field="*{age}"/>
             <input type="hidden" th:field="*{terminal}"/>
-            <br class="form-group">
-            <div>
-                <label class="col-sm-2 control-label">Active:</label>
-                    <input type="checkbox" th:field="*{active}" th:value="*{active}" />
-             </div>
-            </br>
-            <div class="row">
-                <button type="submit" class="btn btn-default">Submit</button>
-            </div>
+            <label class="col-sm-2 control-label">Cuenta activa:</label>
+            <input type="checkbox" th:field="*{active}" th:value="*{active}" />
+           <br></br>
+            <br></br>
+
+            <button type="submit" class="btn btn-default">Aceptar</button>
+
         </form>
     </div>
 </div>

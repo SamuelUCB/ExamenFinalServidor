@@ -1,56 +1,76 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Admin Page</title>
-		<link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+		<title>Inicio</title>
+        <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
-	<body>
-		<form th:action="@{/logout}" method="get">
-			<button name="registration" type="Submit">Logout</button>
-		</form>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand">Balance Fitness Tracker</p>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li><a th:href="${'/admin/ranges'}" >Rango de edades</a></li>
+                    <li><a th:href="${'/admin/terminals'}">Terminales</a></li>
+
+                </ul>
 
 
-		<label th:text="${userName}"></label>
-		<p th:text="${adminMessage}"></p>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="${'/admin/changepassword/'}">Cambiar contraseña</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a th:href="${'/logout'}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-		<form th:action="@{/admin/terminals}" method="get">
-			<button name="listTerminals" type="Submit">Terminals</button>
-		</form>
+    <label th:text="${userName}"></label>
 
-		<form th:action="@{/admin/ranges}" method="get">
-			<button name="listRanges" type="Submit">Age Ranges</button>
-		</form>
-
-		<a th:href="${'/admin/changepassword/'}">Change your password</a>
-
-		<h2>User List</h2>
-		<table class="table table-striped">
-			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>Last Name</th>
-				<th>Email</th>
-				<th>View</th>
-                <th>Active</th>
-                <th>Pulse History</th>
-                <th>Calories History</th>
-				<th>Steps History</th>
+    <h2>Lista de usuarios</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Información</th>
+            <th>Estado del usuario</th>
+            <th>Historial de pulsaciones</th>
+            <th>Historial de calorias</th>
+            <th>Historial de pasos</th>
 
 
-			</tr>
-			<tr th:each="user : ${userList}">
-				<td th:text="${user.id}">Id</td>
-				<td th:text="${user.name}">Name</td>
-				<td th:text="${user.lastName}">Last Name</td>
-				<td th:text="${user.email}">Email</td>
-				<td><a th:href="${'/admin/user/' + user.id}">View Information</a></td>
-				<td><a th:href="${'/admin/user/edit/' + user.id}">Edit Active</a></td>
-				<td><a th:href="${'/admin/userHistory/pulse/' + user.id}"> View Information</a></td>
-				<td><a th:href="${'/admin/userHistory/calories/' + user.id}">View Information</a></td>
-				<td><a th:href="${'/admin/userHistory/steps/' + user.id}">View Information</a></td>
+        </tr>
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.id}">Id</td>
+            <td th:text="${user.name}">Name</td>
+            <td th:text="${user.lastName}">Last Name</td>
+            <td th:text="${user.email}">Email</td>
+            <td><a th:href="${'/admin/user/' + user.id}">Ver info.</a></td>
+            <td><a th:href="${'/admin/user/edit/' + user.id}">Editar estado</a></td>
+            <td><a th:href="${'/admin/userHistory/pulse/' + user.id}"> Ver info.</a></td>
+            <td><a th:href="${'/admin/userHistory/calories/' + user.id}">Ver info.</a></td>
+            <td><a th:href="${'/admin/userHistory/steps/' + user.id}">Ver info.</a></td>
 
-			</tr>
-		</table>
-
-	</body>
+        </tr>
+    </table>
+</body>
 </html>

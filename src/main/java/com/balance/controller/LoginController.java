@@ -107,8 +107,7 @@ public class LoginController {
 		if (user == null) {
 			return "redirect:/";
 		}
-		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-		model.addAttribute("adminMessage","Content Available Only for Users with Admin Role");
+		model.addAttribute("userName", "Bienvenido " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userList", userService.listAllUsers());
 		model.addAttribute("user", user);
 		return "admin/home";

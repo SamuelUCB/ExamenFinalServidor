@@ -1,42 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>User</title>
+    <title>Editar terminal</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form th:action="@{/admin/terminals}" method="get">
-    <button name="registration" type="Submit">Terminals</button>
-</form>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="${'/admin/terminals'}">Atrás</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container">
     <h2>Terminal</h2>
     <div>
         <form class="form-horizontal" th:object="${terminal}" th:action="@{'/admin/terminal/'+${id}}" method="POST">
             <input type="hidden" th:field="*{user}"/>
-            <div>
-                <label class="col-sm-2 control-label">Serial:</label><br/>
-                <input type="number" min="1" th:field="*{serial}"/><br/>
-                <label th:text="${errorTerminal}"/><br/>
-
-
-                <label class="col-sm-2 control-label">Band model:</label><br/>
-                <select th:field="*{bandModel}">
-                    <option th:each="bandModel : ${bands}"
-                            th:value="${bandModel.getId()}"
-                            th:text="${bandModel.getName()}"></option>
-                </select>
-                <br/>
-
-
-                <label class="col-sm-2 control-label">Active:</label><br/>
-                <input type="checkbox" th:field="*{active}" th:value="*{active}" /><br/>
-
-            </div>
-
-
-            <div class="row">
-                <button type="submit" class="btn btn-default">Submit</button>
-            </div>
+            <label class="col-sm-2 control-label">Serial:</label>
+            <input type="number" min="1" th:field="*{serial}"/><br/><br/>
+            <label th:text="${errorTerminal}"/>
+            <label class="col-sm-2 control-label">Modelo de banda:</label>
+            <select th:field="*{bandModel}">
+                <option th:each="bandModel : ${bands}"
+                        th:value="${bandModel.getId()}"
+                        th:text="${bandModel.getName()}"></option>
+            </select><br/><br/>
+            <label class="col-sm-2 control-label">Activo:</label>
+            <input type="checkbox" th:field="*{active}" th:value="*{active}" /><br/><br/>
+            <button type="submit" class="btn btn-default">Aceptar</button>
         </form>
     </div>
 </div>

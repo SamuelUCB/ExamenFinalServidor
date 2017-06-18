@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Page</title>
+    <title>Terminales</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form th:action="@{/admin/home}" method="get">
-    <button name="registration" type="Submit">Home</button>
-</form>
-<label th:text="${userName}"></label>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="${'/admin/home'}">Inicio</a>
+        </div>
+    </div>
+</nav>
 
-<h2>Terminal List</h2>
+<h2>Lista de terminales</h2>
 <table class="table table-striped">
     <tr>
         <th>Serial</th>
-        <th>Active</th>
-        <th>Band Model</th>
-        <th>User</th>
-        <th>Edit Terminal</th>
+        <th>Activa</th>
+        <th>Modelo de banda</th>
+        <th>Usuario</th>
+        <th>Editar terminal</th>
     </tr>
     <tr th:each="terminal : ${terminals}">
         <td th:text="${terminal.serial}">Id</td>
-        <td th:text="${terminal.active==true?'YES':'NO'}">Name</td>
+        <td th:text="${terminal.active==true?'SI':'NO'}">Name</td>
         <td th:text="${terminal.bandModel==null?'':terminal.bandModel.getName()}">Last Name</td>
         <td th:text="${terminal.user==null?'':terminal.user.getEmail()}">Email</td>
-        <td><a th:href="${'/admin/terminal/edit/' + terminal.serial}">Edit Terminal</a></td>
+        <td><a th:href="${'/admin/terminal/edit/' + terminal.serial}">Editar</a></td>
 
     </tr>
 </table>
