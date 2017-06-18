@@ -4,7 +4,16 @@
 		<title>Login</title>
 		<link href="/css/Estilo.css" th:href="@{/css/Estilo.css}" rel="stylesheet" media="screen"/>
 	</head>
-	<body>
+    <style>
+        body{
+            background: url(images/principal.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            }
+    </style>
+	<body >
 		<form th:action="@{/registration}" method="get">
 			<button type="Submit">Crear una cuenta</button>
 		</form>
