@@ -7,22 +7,58 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form th:action="@{/logout}" method="get">
-    <div class="btn-group" role="group" aria-label="...">
-        <button type="submit" class="btn btn-default">Logout</button>
-        <a th:href="${'/user/profile/'}" type="button" class="btn btn-default">Perfil</a>
-        <a th:href="${'/user/CaloriesHistory'}" type="button" class="btn btn-default">Historial de calorias</a>
-        <a th:href="${'/user/PulseHistory'}" type="button" class="btn btn-default">Historial de pulsos</a>
-        <a th:href="${'/user/StepsHistory'}" type="button" class="btn btn-default">Historial de distancias</a>
-        <a th:href="${'/user/Map'}" type="button" class="btn btn-default">Locaciones</a>
-        <a th:href="${'/user/LastLocation'}" type="button" class="btn btn-default">Ultima locacion</a>
-        <a th:href="${'/user/dayLocations'}" type="button" class="btn btn-default">Locaciones del día</a>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <p class="navbar-brand">Balance Fitness Tracker</p>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <li><a th:href="${'/user/profile/'}">Ver perfil</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Historiales<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="${'/user/CaloriesHistory'}" >Historial de calorias</a></li>
+                        <li><a th:href="${'/user/PulseHistory'}" >Historial de pulsos</a></li>
+                        <li><a th:href="${'/user/StepsHistory'}" >Historial de distancias</a></li>
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Locaciones<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="${'/user/Map'}">Locaciones</a></li>
+                        <li><a th:href="${'/user/LastLocation'}">Última locacion</a></li>
+                        <li><a th:href="${'/user/dayLocations'}" >Locaciones del día</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="${'/user/edit/'}">Editar Perfil</a></li>
+                        <li><a th:href="${'/user/changepassword/'}">Cambiar contraseña</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="${'/logout'}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</form>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
+</nav>
+
 <div class="container">
 
     <script th:inline="javascript">
