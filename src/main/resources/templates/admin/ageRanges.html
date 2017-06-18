@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Age Ranges</title>
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<form th:action="@{/admin/home}" method="get">
+    <button name="registration" type="Submit">Home</button>
+</form>
+<label th:text="${userName}"></label>
+
+<form th:action="@{/admin/ageRange/new}" method="get">
+    <button name="newAgeRange" type="Submit">New Age Range</button>
+</form>
+
+<h2>Age Ranges List</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Age</th>
+        <th>Meta</th>
+        <th></th>
+        <th>Maximum</th>
+        <th>Edit Age Range</th>
+        <th>Delete Age Range</th>
+    </tr>
+    <tr th:each="ageRange : ${ageRanges}">
+        <td th:text="${ageRange.age}">Age</td>
+        <td th:text="${ageRange.metaStart}+' bpm -'">Me</td>
+        <td th:text="${ageRange.metaFinish}+' bpm'">ta</td>
+        <td th:text="${ageRange.maximum}+' bpm'">Email</td>
+        <td><a th:href="${'/admin/ageRange/edit/' + ageRange.id}">Edit Age Range</a></td>
+        <td><a th:href="${'/admin/ageRange/delete/' + ageRange.id}">Delete Age Range</a></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -29,6 +27,12 @@ public class UserController {
     private PulseHistoryService pulseHistoryService;
     private StepsHistoryService stepsHistoryService;
     private LocationHistoryService locationHistoryService;
+    private AgeRangeService ageRangeService;
+
+    @Autowired
+    public void setAgeRangeService(AgeRangeService ageRangeService){
+        this.ageRangeService=ageRangeService;
+    }
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -226,6 +230,85 @@ public class UserController {
 
         return "admin/terminalForm";
     }
+
+    @RequestMapping(value = "/admin/ageRange/new",method = RequestMethod.GET)
+    public String createAgeRange(Model model){
+        model.addAttribute("ageRange",new AgeRange());
+        return "admin/ageRangeForm";
+    }
+
+    @RequestMapping(value = "/admin/ranges",method = RequestMethod.GET)
+    public String listAgeRanges(Model model){
+        Iterator<AgeRange> iterator=ageRangeService.listAllAgeRanges().iterator();
+        ArrayList<AgeRange> list = new ArrayList<AgeRange>();
+        while (iterator.hasNext()){
+            AgeRange aux=iterator.next();
+            list.add(aux);
+        }
+        Collections.sort(list, new Comparator<AgeRange>() {
+            @Override public int compare(AgeRange p1, AgeRange p2) {
+                return p1.getAge() - p2.getAge(); // Ascending
+            }
+        });
+
+        model.addAttribute("ageRanges",list);
+        return "admin/ageRanges";
+    }
+
+    @RequestMapping(value="/admin/ageRange/edit/{id}",method =RequestMethod.GET)
+    public String editAgeRange(@PathVariable Integer id,Model model){
+        model.addAttribute("ageRange",ageRangeService.getAgeRangeById(id));
+        ageRangeService.saveAgeRange(ageRangeService.getAgeRangeById(id));
+        return "admin/ageRangeForm";
+    }
+
+
+    @RequestMapping(value="/admin/ageRange/delete/{id}",method =RequestMethod.GET)
+    public String deleteAgeRange(@PathVariable Integer id){
+        ageRangeService.deleteAgeRange(id);
+        return "redirect:/admin/ranges";
+    }
+
+
+    @RequestMapping(value = "/admin/ageRange", method = RequestMethod.POST)
+    public String saveAgeRange(@Valid AgeRange ageRange,BindingResult bindingResult,Model model) {
+        Iterator<AgeRange> iterator=ageRangeService.listAllAgeRanges().iterator();
+        ArrayList<AgeRange> list = new ArrayList<AgeRange>();
+        while (iterator.hasNext()){
+            AgeRange aux=iterator.next();
+            list.add(aux);
+        }
+        Collections.sort(list, new Comparator<AgeRange>() {
+            @Override public int compare(AgeRange p1, AgeRange p2) {
+                return p1.getAge() - p2.getAge(); // Ascending
+            }
+        });
+        model.addAttribute("ageRanges",list);
+
+        if(!bindingResult.hasErrors()) {
+            for(AgeRange aux:list){
+                if(aux.getAge()==ageRange.getAge() && aux.getId()!=ageRange.getId()){
+                    model.addAttribute("errorAgeRange","That age is already registered");
+                    return "admin/ageRangeForm";
+                }
+            }
+            if(ageRange.getMetaStart()>ageRange.getMetaFinish()){
+                model.addAttribute("errorAgeRange","The values of meta are invalids");
+            }else{
+                if(ageRange.getMaximum()<ageRange.getMetaStart() || ageRange.getMaximum()<ageRange.getMetaFinish()){
+                    model.addAttribute("errorAgeRange","The value of maximum is invalid");
+                }else{
+                    ageRangeService.saveAgeRange(ageRange);
+                    return "redirect:/admin/ranges";
+                }
+            }
+        }else{
+            model.addAttribute("errorAgeRange","Some value is empty");
+        }
+        return "admin/ageRangeForm";
+    }
+
+
 
 
     //LimitedUser Controller--------------------------------------------------------

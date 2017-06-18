@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create a new Age Range</title>
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<form th:action="@{/admin/ranges}" method="get">
+    <button name="age Ranges" type="Submit">Age Ranges</button>
+</form>
+
+<h2>Registrar Age Range</h2>
+<form th:action="@{/admin/ageRange}" th:object="${ageRange}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label>Age</label><br/>
+    <input type="number" min="1" th:field="*{age}" placeholder="age" /><br/>
+
+    <label>Meta</label><br/><br/>
+    <label>MetaStart</label><br/>
+    <input type="number" min="1" th:field="*{metaStart}" placeholder="metaStart" /><br/>
+
+    <label>MetaFinish</label><br/>
+    <input type="number" min="1" th:field="*{metaFinish}" placeholder="metaFinish" /><br/>
+
+    <label>Maximum</label><br/>
+    <input type="number" min="1" th:field="*{maximum}" placeholder="maximum" /><br/>
+    <br/>
+    <label th:text="${errorAgeRange}"></label><br/>
+
+    <input type="submit" name="submit" value="Register Age Range"/>
+</form>
+
+</body>
+</html>

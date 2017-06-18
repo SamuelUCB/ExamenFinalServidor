@@ -17,7 +17,11 @@
 			<button name="listTerminals" type="Submit">Terminals</button>
 		</form>
 
-        <a th:href="${'/admin/changepassword/'}">Change your password</a>
+		<form th:action="@{/admin/ranges}" method="get">
+			<button name="listRanges" type="Submit">Age Ranges</button>
+		</form>
+
+		<a th:href="${'/admin/changepassword/'}">Change your password</a>
 
 		<h2>User List</h2>
 		<table class="table table-striped">
