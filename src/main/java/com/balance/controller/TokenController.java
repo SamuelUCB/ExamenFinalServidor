@@ -69,7 +69,7 @@ public class TokenController {
             userService.saveUserEdited(userExist);
 
             //Enviar mail
-            smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "<a href='http://localhost:8080/forgotpasswordconfirm/" + stringToken +" ' > Change password </a>");
+            smtpMailSender.send(text1, "Balance Fitness Tracker: Recupera tu cuenta", "¡Hola, "+userExist.getName()+"! Recibimos una solicitud para recuperar su cuenta, haga click en este <a href='http://localhost:8080/forgotpasswordconfirm/" + stringToken +" ' >enlace</a> para recuperar su cuenta. Si no es así ignore este mensaje.<br></br> Gracias por usar Balance Fitness Tracker.");
             return "redirect:/";
         }
         return "redirect:/forgotpassword";

@@ -34,15 +34,15 @@
 <table class="table table-striped">
     <tr>
         <th>Edad</th>
-        <th>Meta</th>
-        <th></th>
+        <th>Meta inicial</th>
+        <th>Meta final</th>
         <th>Máximo</th>
         <th>Editar rango</th>
         <th>Eliminar rango</th>
     </tr>
     <tr th:each="ageRange : ${ageRanges}">
         <td th:text="${ageRange.age}">Age</td>
-        <td th:text="${ageRange.metaStart}+' bpm -'">Me</td>
+        <td th:text="${ageRange.metaStart}+' bpm '">Me</td>
         <td th:text="${ageRange.metaFinish}+' bpm'">ta</td>
         <td th:text="${ageRange.maximum}+' bpm'">Email</td>
         <td><a th:href="${'/admin/ageRange/edit/' + ageRange.id}">Editar</a></td>

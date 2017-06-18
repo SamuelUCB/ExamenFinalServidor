@@ -4,6 +4,16 @@
 		<title>Crea tu cuenta</title>
 		<link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 	</head>
+    <style>
+        body{
+            background: url(images/secundarios.jpeg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+
+            }
+    </style>
 	<body>
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
@@ -14,7 +24,7 @@
 
 	</nav>
     <div class="container">
-		<h2>Registrate</h2>
+		<h1>Registrate</h1>
 		<form autocomplete="off" th:action="@{/registration}" th:object="${user}" method="post">
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{active}" />
