@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>UserProfile</title>
+    <title>Menu de inicio</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -28,8 +28,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Historiales<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a th:href="${'/user/CaloriesHistory'}" >Historial de calorias</a></li>
-                        <li><a th:href="${'/user/PulseHistory'}" >Historial de pulsos</a></li>
-                        <li><a th:href="${'/user/StepsHistory'}" >Historial de distancias</a></li>
+                        <li><a th:href="${'/user/PulseHistory'}" >Historial de pulsaciones</a></li>
+                        <li><a th:href="${'/user/StepsHistory'}" >Historial de distancia</a></li>
 
                     </ul>
                 </li>
@@ -60,6 +60,8 @@
 </nav>
 
 <div class="container">
+
+
 
     <script th:inline="javascript">
         var idValue = [[${id}]];
@@ -94,19 +96,48 @@
             updateCalories();
             updatePulse();
         }, 1000);
+
+
+
     </script>
 
-   <p>Pasos</p>
-    <span id="steps" class="label label-primary" th:text="${countSteps}">countSteps</span> <br/><br/>
+    <div class="row">
+    <div class="col-sm-4 col-md-3">
+        <div class="thumbnail">
+            <div class="caption">
+                <img src="/images/steps.png" alt="steps" width="242" height="200"></img>
+                <h3>Pasos: <span id="steps" class="label label-info" th:text="${countSteps}">countSteps</span></h3>
 
-    <p>Distancia</p>
-    <span id="distance" class="label label-primary" th:text="${countDistance}">countDistance</span> <br/><br/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3">
+            <div class="thumbnail">
+                <div class="caption">
+                    <img src="/images/distance.jpg" alt="distance" width="242" height="200"></img>
+                    <h3>Distancia: <span id="distance" class="label label-info" th:text="${countDistance}">countDistance</span></h3>
 
-    <p>Calorias</p>
-    <span id="calories" class="label label-primary" th:text="${countCalories}">countCalories</span><br></br>
+                </div>
+            </div>
+        </div>
+    <div class="col-sm-4 col-md-3">
+        <div class="thumbnail">
+            <div class="caption">
+                <img src="/images/calories.jpg" alt="calories" width="242" height="200"></img>
+                <h3>Calorias: <span id="calories" class="label label-info" th:text="${countCalories}">countCalories</span></h3>
 
-    <p>Ritmo cardiaco</p>
-    <span id="bpm" class="label label-primary" th:text="${countBpm}">countCalories</span><br></br>
+            </div>
+        </div>
+    </div>
+        <div class="col-sm-4 col-md-3">
+            <div class="thumbnail">
+                <div class="caption">
+                    <img src="/images/pulse.png" alt="pulse" width="242" height="200"></img>
+                    <h3>Ritmo cardiaco: <span id="bpm" class="label label-warning" th:text="${countBpm}">countBpm</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 </body>

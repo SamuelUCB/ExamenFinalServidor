@@ -3,7 +3,7 @@
 <head lang="en">
     <title>Geolocal</title>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi1Rsl51hkfmrTe9-YShmlWMGn3bknbMA&amp;callback=myMap"></script>
-
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
     <style>
                 html, body, #map-canvas
                 {
@@ -60,6 +60,14 @@
 
 </head>
 <body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <a class="navbar-brand" th:href="${'/user/home'}">Inicio</a>
+        </div>
+    </div>
+</nav>
 <div id="map-canvas"></div>
 </body>
 </html>

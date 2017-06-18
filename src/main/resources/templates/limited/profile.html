@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>UserProfile</title>
+    <title>Perfil</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
-<form th:action="@{/user/home}" method="get">
-    <button name="registration" type="Submit">Home</button>
-</form>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <a class="navbar-brand" th:href="${'/user/home'}">Inicio</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container">
     <div>
-        <h3> Name: </h3>
+        <h3> Nombre: </h3>
         <p th:text="${user.name}">name</p>
         <h3>Email:</h3>
         <p th:text="${user.email}">email</p>
-        <h3>Age:</h3>
+        <h3>Edad:</h3>
         <p th:text="${user.age}">age</p>
-        <h3>Heigth:</h3>
+        <h3>Altura:</h3>
         <p th:text="${user.heigth}">heigth</p>
-        <h3>Wheigth:</h3>
+        <h3>Peso:</h3>
         <p th:text="${user.weigth}">weigth</p>
-        <h3>Model band:</h3>
+        <h3>Modelo de banda:</h3>
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getBandModel().getName()}">Model band</p>
         <h3>Serial:</h3>
         <p th:text="${user.getTerminal()==null?'':user.getTerminal().getSerial()}">Serial</p>
