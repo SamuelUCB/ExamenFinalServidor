@@ -92,6 +92,9 @@ public class LoginController {
 				}else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
                 model.addAttribute("errorTerminal", "That serial is already in use");
             }else{
+				Date birthday=new Date();
+				Integer age=birthday.getYear()-user.getBirthday().getYear();
+				user.setAge(age);
                 userService.saveUser(user);
                 model.addAttribute("successMessage", "El usuario se registro correctamente");
                 model.addAttribute("user", new User());

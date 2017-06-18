@@ -374,6 +374,9 @@ public class UserController {
                 user.getTerminal().setActive(true);
                 terminalService.saveTerminal(user.getTerminal());
                 user.setTerminal(user.getTerminal());
+                Date birthday=new Date();
+                Integer age=birthday.getYear()-user.getBirthday().getYear();
+                user.setAge(age);
                 userService.saveUserEdited(user);
                 return "redirect:/user/profile/";
             }
