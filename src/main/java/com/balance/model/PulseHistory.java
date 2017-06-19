@@ -12,11 +12,13 @@ public class PulseHistory {
     private int bpm;
     private Date date;
     private Integer user;
+    private String intensidad;
 
-    public PulseHistory(int bpm, Date date, Integer user) {
+    public PulseHistory(int bpm, Date date, Integer user, String intensidad) {
         this.bpm = bpm;
         this.date = date;
         this.user = user;
+        this.intensidad = intensidad;
     }
 
     public PulseHistory() {
@@ -52,5 +54,13 @@ public class PulseHistory {
 
     public void setUser(Integer user) {
         this.user = user;
+    }
+
+    public String getIntensidad() {
+        return intensidad;
+    }
+
+    public void setIntensidad(String intensidad) {
+        this.intensidad = intensidad;
     }
 }

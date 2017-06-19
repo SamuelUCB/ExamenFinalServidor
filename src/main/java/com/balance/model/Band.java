@@ -19,6 +19,8 @@ public class Band {
     private Float longitude;
     private Integer calories;
     private Integer user;
+    private Date fecha_evento;
+    private String intensidad;
 
     public Integer getBpm() {
         return bpm;
@@ -99,7 +101,23 @@ public class Band {
         }
     }
 
-    public void asignar(Long id, Integer steps, Integer bpm, Long distance, Date fecha_registro, Float latitude, Float longitude, Integer calories, Integer user) {
+    public Date getFecha_evento() {
+        return fecha_evento;
+    }
+
+    public void setFecha_evento(Date fecha_evento) {
+        this.fecha_evento = fecha_evento;
+    }
+
+    public String getIntensidad() {
+        return intensidad;
+    }
+
+    public void setIntensidad(String intensidad) {
+        this.intensidad = intensidad;
+    }
+
+    public void asignar(Long id, Integer steps, Integer bpm, Long distance, Date fecha_registro, Float latitude, Float longitude, Integer calories, Integer user, Date fecha_evento, String intensidad) {
         this.id = id;
         this.steps = steps;
         this.bpm = bpm;
@@ -109,5 +127,7 @@ public class Band {
         this.longitude = longitude;
         this.calories = calories;
         this.user = user;
+        this.fecha_evento = fecha_evento;
+        this.intensidad = intensidad;
     }
 }
