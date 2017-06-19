@@ -143,21 +143,15 @@ public class LoginController {
         Iterator<CaloriesHistory> iteratorC = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         Iterator<StepsHistory> iteratorS = stepsHistoryService.listAllStepsHistory().iterator();
         Iterator<PulseHistory> iteratorP = pulseHistoryService.listAllPulseHistory().iterator();
-<<<<<<< HEAD
-        Iterator<AgeRange> iteratorAR=ageRangeService.listAllAgeRanges().iterator();
-=======
+
 		Iterator<AgeRange> iteratorA = ageRangeService.listAllAgeRanges().iterator();
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 
         StepsHistory auxS = new StepsHistory();
         CaloriesHistory auxC = new CaloriesHistory();
         PulseHistory auxP = new PulseHistory();
-<<<<<<< HEAD
-        AgeRange auxAR=new AgeRange();
 
-=======
 		AgeRange auxA = new AgeRange();
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
+
 		Date fechaactual=new Date();
         while(iteratorS.hasNext()){
             auxS = iteratorS.next();
@@ -203,20 +197,6 @@ public class LoginController {
 			}
 		}
 
-<<<<<<< HEAD
-		Boolean flag=false;
-		AgeRange auxAR2=new AgeRange();
-
-		while(iteratorAR.hasNext()){
-			auxAR=iteratorAR.next();
-			if(flag==false){
-				if(user.getAge()<=auxAR.getAge()){
-					flag=true;
-					auxAR2=auxAR;
-				}
-			}
-		}
-=======
 		Boolean flag = false;
 		AgeRange auxA2 = new AgeRange();
 
@@ -237,9 +217,6 @@ public class LoginController {
 			auxA2 = auxA;
 		}
 
-
-
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
 		model.addAttribute("user", user);
@@ -248,15 +225,11 @@ public class LoginController {
         model.addAttribute("countDistance",distance);
         model.addAttribute("countBpm",bpm);
         model.addAttribute("id",user.getId());
-<<<<<<< HEAD
-		model.addAttribute("metaS",auxAR2.getMetaStart());
-		model.addAttribute("metaF",auxAR2.getMetaFinish());
-		model.addAttribute("max",auxAR2.getMaximum());
-=======
+
 		model.addAttribute("metaStart",auxA2.getMetaStart());
 		model.addAttribute("metaFinish",auxA2.getMetaFinish());
 		model.addAttribute("max",auxA2.getMaximum());
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
+
         return "user/home";
     }
 

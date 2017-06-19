@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/forgotpasswordconfirm").permitAll()
                 .antMatchers("/changepassword").permitAll()
                 .antMatchers("/changepasswordyes").permitAll()
+				.antMatchers("/getActualLocations/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")			//.anyRequest().authenticated()
                 .antMatchers("/user/**").hasAuthority("LIMITED")		//.anyRequest().authenticated()

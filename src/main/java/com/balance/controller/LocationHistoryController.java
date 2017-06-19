@@ -60,4 +60,37 @@ public class LocationHistoryController {
         return locationHistory;
 
     }
+
+
+    @RequestMapping(value = "/getActualLocations/{id}", method = RequestMethod.GET)
+    public ArrayList<ArrayList<?>> getActualLocactions(@PathVariable Integer id) {
+        float latitude = 0;
+        float longitude = 0;
+        Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        List<LocationHistory> myList = new ArrayList<>();
+        ArrayList<Float> listLatitud = new ArrayList<>();
+        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<String> listName = new ArrayList<>();
+        Date fechaactual = new Date();
+        while(iterator.hasNext()){
+            myList.add(iterator.next());
+        }
+        int cantidad = 0;
+        for(LocationHistory lh : myList){
+            if(lh.getUser().equals(id) &&
+                    fechaactual.getDay()==lh.getDate().getDay() &&
+                    fechaactual.getMonth()==lh.getDate().getMonth() &&
+                    fechaactual.getYear()==lh.getDate().getYear()){
+                cantidad++;
+                listLatitud.add(lh.getLatitude());
+                listLongitud.add(lh.getLongitude());
+                listName.add("Location " + cantidad);
+            }
+        }
+        ArrayList<ArrayList<?>> listaFinal = new ArrayList<>();
+        listaFinal.add(listLatitud);
+        listaFinal.add(listLongitud);
+        listaFinal.add(listName);
+        return listaFinal;
+    }
 }

@@ -5,6 +5,7 @@
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi1Rsl51hkfmrTe9-YShmlWMGn3bknbMA&amp;callback=myMap"></script>
     <link href="/css/homeLimited.css" th:href="@{/css/homeLimited.css}" rel="stylesheet" media="screen"/>
 </head>
 <body >
@@ -66,16 +67,10 @@
 
     <script th:inline="javascript">
         var idValue = [[${id}]];
-<<<<<<< HEAD
-        var metaSValue = [[${metaS}]];
-        var metaFValue = [[${metaF}]];
-        var maximum = [[${max}]];
-=======
+
         var metaSValue = [[${metaStart}]];
         var metaFValue = [[${metaFinish}]];
         var maximum = [[${max}]];
-
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 
         function updateSteps(){
             $.getJSON( "/getSteps/" + idValue, function( data ) {
@@ -95,13 +90,9 @@
             });
         }
 
-      function updatePulse(){
+        function updatePulse(){
             $.getJSON( "/getPulse/" + idValue, function( data ) {
-<<<<<<< HEAD
                 $('#bpm').html(data.bpm);
-=======
-              $('#bpm').html(data.bpm);
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
                 var bpm=data.bpm;
                 if(data.bpm > maximum){
                         $('#bpm').removeClass("label-warning")
@@ -125,20 +116,84 @@
                              $('#bpm').addClass("label-warning");
                     }
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
             });
         }
+
+        var latitudes = [];
+        var longitudes = [];
+        var titulos = [];
+
+        function updateMap() {
+            $.getJSON( "/getActualLocations/" + idValue, function( data ) {
+                console.log(data);
+                latitudes = data[0];
+                longitudes = data[1];
+                titulos = data[2];
+            });
+            eliminarMarkers();
+            dibujarMarkers();
+        }
+
+        var mapaUpdate = 0;
 
         setInterval(function(){
             updateSteps();
             updateDistance();
             updateCalories();
             updatePulse();
+            mapaUpdate++;
+            if(mapaUpdate > 4) {
+                updateMap();
+                mapaUpdate = 0;
+            }
         }, 1000);
 
+        var map;
+        var marker;
+        var markers = [];
+
+        function drawMap(map, latlng, titulo) {
+            marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title: titulo
+            });
+        }
+
+        function dibujarMarkers() {
+            /*<![CDATA[*/
+
+            for (var i = 0; i < titulos.length; i++) {
+                var defaultLatLng = new google.maps.LatLng(latitudes[i], longitudes[i]);
+                drawMap(map, defaultLatLng, titulos[i]);
+                markers.push(marker);
+            }
+
+            /*]]>*/
+        }
+
+        function eliminarMarkers() {
+            /*<![CDATA[*/
+
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+
+            markers = [];
+            /*]]>*/
+        }
+
+        function init_map() {
+            var centro = new google.maps.LatLng(0.0, 0.0);
+            var options = {zoom: 3, center: centro};
+
+            map = new google.maps.Map(document.getElementById("map-canvas"), options);
+            updateMap();
+        }
+
+        window.onload = function() {
+            init_map();
+        }
 
 
     </script>
@@ -181,6 +236,7 @@
         </div>
     </div>
 
+    <div id="map-canvas" style="width:50%;height:200px;margin: 0 auto 0 auto;"></div>
 </div>
 </body>
 </html>
