@@ -92,21 +92,26 @@ public class LoginController {
 
 		if(!bindingResult.hasErrors()) {
             if(user.getTerminal()==null){
-				model.addAttribute("errorTerminal","The serial doesn't exist or the serial field was empty");
+				model.addAttribute("errorTerminal","El serial no existe o el campo serial esta vacio");
 			}else if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
-                    model.addAttribute("errorTerminal","That serial does not match the model band");
+                    model.addAttribute("errorTerminal","El serial no concuerda con el modelo de banda");
 				}else if(terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
-                model.addAttribute("errorTerminal", "That serial is already in use");
+                model.addAttribute("errorTerminal", "El serial ya fue activado");
             }else{
-				Date birthday=new Date();
-				Integer age=birthday.getYear()-user.getBirthday().getYear();
-				if(birthday.getMonth()-user.getBirthday().getMonth()<0){
-					age--;
+				User userTerminal=terminalService.getTerminalById(user.getTerminal().getSerial()).getUser();
+				if(userTerminal!=null){
+					model.addAttribute("errorTerminal", "El serial ya esta en uso");
+				}else{
+					Date birthday=new Date();
+					Integer age=birthday.getYear()-user.getBirthday().getYear();
+                    if(birthday.getMonth()-user.getBirthday().getMonth()<0){
+                        age--;
+                    }
+					user.setAge(age);
+					userService.saveUser(user);
+					model.addAttribute("successMessage", "El usuario se registro correctamente");
+					model.addAttribute("user", new User());
 				}
-				user.setAge(age);
-                userService.saveUser(user);
-                model.addAttribute("successMessage", "El usuario se registro correctamente");
-                model.addAttribute("user", new User());
             }
 		}
 		return "registration";
@@ -138,13 +143,21 @@ public class LoginController {
         Iterator<CaloriesHistory> iteratorC = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         Iterator<StepsHistory> iteratorS = stepsHistoryService.listAllStepsHistory().iterator();
         Iterator<PulseHistory> iteratorP = pulseHistoryService.listAllPulseHistory().iterator();
+<<<<<<< HEAD
         Iterator<AgeRange> iteratorAR=ageRangeService.listAllAgeRanges().iterator();
+=======
+		Iterator<AgeRange> iteratorA = ageRangeService.listAllAgeRanges().iterator();
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 
         StepsHistory auxS = new StepsHistory();
         CaloriesHistory auxC = new CaloriesHistory();
         PulseHistory auxP = new PulseHistory();
+<<<<<<< HEAD
         AgeRange auxAR=new AgeRange();
 
+=======
+		AgeRange auxA = new AgeRange();
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 		Date fechaactual=new Date();
         while(iteratorS.hasNext()){
             auxS = iteratorS.next();
@@ -190,6 +203,7 @@ public class LoginController {
 			}
 		}
 
+<<<<<<< HEAD
 		Boolean flag=false;
 		AgeRange auxAR2=new AgeRange();
 
@@ -202,6 +216,30 @@ public class LoginController {
 				}
 			}
 		}
+=======
+		Boolean flag = false;
+		AgeRange auxA2 = new AgeRange();
+
+
+		while(iteratorA.hasNext()){
+			auxA = iteratorA.next();
+			if(flag == false){
+				if(user.getAge() <= auxA.getAge() ){
+					flag = true;
+					auxA2 = auxA;
+
+				}
+			}
+
+		}
+
+		if(flag == false){
+			auxA2 = auxA;
+		}
+
+
+
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
 		model.addAttribute("user", user);
@@ -210,9 +248,15 @@ public class LoginController {
         model.addAttribute("countDistance",distance);
         model.addAttribute("countBpm",bpm);
         model.addAttribute("id",user.getId());
+<<<<<<< HEAD
 		model.addAttribute("metaS",auxAR2.getMetaStart());
 		model.addAttribute("metaF",auxAR2.getMetaFinish());
 		model.addAttribute("max",auxAR2.getMaximum());
+=======
+		model.addAttribute("metaStart",auxA2.getMetaStart());
+		model.addAttribute("metaFinish",auxA2.getMetaFinish());
+		model.addAttribute("max",auxA2.getMaximum());
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
         return "user/home";
     }
 

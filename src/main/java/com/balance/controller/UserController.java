@@ -113,7 +113,12 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public String saveUser(@Valid User user) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User admin = userService.findUserByEmail(auth.getName());
         userService.saveUserEdited(user);
+        if(admin.getId()==user.getId() && !user.isActive()) {
+            return "redirect:/logout";
+        }
         return "redirect:/admin/home";
     }
 

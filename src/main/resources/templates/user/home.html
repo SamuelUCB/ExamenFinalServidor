@@ -66,9 +66,16 @@
 
     <script th:inline="javascript">
         var idValue = [[${id}]];
+<<<<<<< HEAD
         var metaSValue = [[${metaS}]];
         var metaFValue = [[${metaF}]];
         var maximum = [[${max}]];
+=======
+        var metaSValue = [[${metaStart}]];
+        var metaFValue = [[${metaFinish}]];
+        var maximum = [[${max}]];
+
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
 
         function updateSteps(){
             $.getJSON( "/getSteps/" + idValue, function( data ) {
@@ -88,9 +95,13 @@
             });
         }
 
-        function updatePulse(){
+      function updatePulse(){
             $.getJSON( "/getPulse/" + idValue, function( data ) {
+<<<<<<< HEAD
                 $('#bpm').html(data.bpm);
+=======
+              $('#bpm').html(data.bpm);
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
                 var bpm=data.bpm;
                 if(data.bpm > maximum){
                         $('#bpm').removeClass("label-warning")
@@ -114,7 +125,10 @@
                              $('#bpm').addClass("label-warning");
                     }
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> bbd51e0ba7c8dbc2e986baeb5d41778e461201f0
             });
         }
 

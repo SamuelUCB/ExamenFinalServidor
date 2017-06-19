@@ -65,7 +65,7 @@ public class BandController {
     public Band saveBand(@Valid Band band, BindingResult bindingResult, Model model) {
         band.setFecha_registro(new Date());
         caloriesHistoryService.saveCaloriesHistory(new CaloriesHistory(band.getCalories(), band.getUser(), band.getFecha_registro()));
-        pulseHistoryService.savePulseHistory(new PulseHistory(band.getBpm(), band.getFecha_registro(), band.getUser()));
+        pulseHistoryService.savePulseHistory(new PulseHistory(band.getBpm(), band.getFecha_registro(), band.getUser(), band.getIntensidad()));
         stepsHistoryService.saveStepsHistory(new StepsHistory(band.getSteps(), band.getDistance(), band.getUser(), band.getFecha_registro()));
         locationHistoryService.saveLocationHistory(new LocationHistory(band.getLatitude(), band.getLongitude(), band.getUser(), band.getFecha_registro()));
         bandService.saveBand(band);
