@@ -22,12 +22,14 @@
         <table class="table table-striped">
             <tr>
                 <th>Pulsaciones (bpm)</th>
+                <th>Intensidad</th>
                 <th>Fecha de registro</th>
 
 
             </tr>
             <tr th:each="pulse : ${pulses}">
                 <td th:text="${pulse.bpm}">bpm</td>
+                <td th:text="${pulse.intensidad}">bpm</td>
                 <td th:text="${pulse.date}">date</td>
 
 

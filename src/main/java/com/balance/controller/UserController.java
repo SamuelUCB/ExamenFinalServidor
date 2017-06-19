@@ -429,6 +429,7 @@ public class UserController {
         }
         model.addAttribute("user",user);
         model.addAttribute("pulses", resp);
+
         return "limited/pulseHistory";
     }
 

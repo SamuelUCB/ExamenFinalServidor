@@ -9,6 +9,8 @@ import com.balance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,7 +83,7 @@ public class TokenController {
     }
 
     @RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-    public String changePasswordInForgot(String email,String codigo) {
+    public String changePasswordInForgot(String email, String codigo) {
         User userExists = userService.findUserByEmail(email);
         if (userExists != null) {
             //  Encriptando password
@@ -98,13 +100,16 @@ public class TokenController {
                             tokenService.saveToken(t);
                             return "redirect:/";
                         }
+
                         return "changepassword";
                     }
 
                     return "changepassword";
             }
+
             return "changepassword";
         }
+
         return "changepassword";
     }
 }
