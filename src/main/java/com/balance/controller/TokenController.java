@@ -85,23 +85,26 @@ public class TokenController {
         User userExists = userService.findUserByEmail(email);
         if (userExists != null) {
             //  Encriptando password
+
+
             Token t=tokenService.findTokenByToken(codigo);
             if(t!=null && t.getActive()==true){
-                Date dateverification=new Date();
-                if(t.getExpired_date().after(dateverification)){
-                    if(t.getUser_creator_id()==userExists.getId()){
-                        userExists.setPassword(bCryptPasswordEncoder.encode(codigo));
-                        userService.saveUserEdited(userExists);
-                        t.setActive(false);
-                        tokenService.saveToken(t);
-                        return "redirect:/";
+                    Date verifyday=new Date();
+                    if(t.getExpired_date().after(verifyday)){
+                        if(t.getUser_creator_id()==userExists.getId()){
+                            userExists.setPassword(bCryptPasswordEncoder.encode(codigo));
+                            userService.saveUserEdited(userExists);
+                            t.setActive(false);
+                            tokenService.saveToken(t);
+                            return "redirect:/";
+                        }
+                        return "changepassword";
                     }
-                    return "access-denied";
-                }
-                return "access-denied";
+
+                    return "changepassword";
             }
-            return "access-denied";
+            return "changepassword";
         }
-        return "access-denied";
+        return "changepassword";
     }
 }
