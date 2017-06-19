@@ -39,6 +39,7 @@ public class LoginController {
 	private CaloriesHistoryService caloriesHistoryService;
 	private PulseHistoryService pulseHistoryService;
 	private StepsHistoryService stepsHistoryService;
+	private AgeRangeService ageRangeService;
 
 	@Autowired
     public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
@@ -62,6 +63,11 @@ public class LoginController {
 	@Autowired
 	public void setBandModelService(BandModelService bandModelService){
 		this.bandModelService=bandModelService;
+	}
+
+	@Autowired
+	public void setAgeRangeService(AgeRangeService ageRangeService) {
+		this.ageRangeService = ageRangeService;
 	}
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
@@ -132,10 +138,13 @@ public class LoginController {
         Iterator<CaloriesHistory> iteratorC = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         Iterator<StepsHistory> iteratorS = stepsHistoryService.listAllStepsHistory().iterator();
         Iterator<PulseHistory> iteratorP = pulseHistoryService.listAllPulseHistory().iterator();
+        Iterator<AgeRange> iteratorAR=ageRangeService.listAllAgeRanges().iterator();
 
         StepsHistory auxS = new StepsHistory();
         CaloriesHistory auxC = new CaloriesHistory();
         PulseHistory auxP = new PulseHistory();
+        AgeRange auxAR=new AgeRange();
+
 		Date fechaactual=new Date();
         while(iteratorS.hasNext()){
             auxS = iteratorS.next();
@@ -181,6 +190,18 @@ public class LoginController {
 			}
 		}
 
+		Boolean flag=false;
+		AgeRange auxAR2=new AgeRange();
+
+		while(iteratorAR.hasNext()){
+			auxAR=iteratorAR.next();
+			if(flag==false){
+				if(user.getAge()<=auxAR.getAge()){
+					flag=true;
+					auxAR2=auxAR;
+				}
+			}
+		}
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
 		model.addAttribute("user", user);
@@ -189,7 +210,10 @@ public class LoginController {
         model.addAttribute("countDistance",distance);
         model.addAttribute("countBpm",bpm);
         model.addAttribute("id",user.getId());
-		return "user/home";
+		model.addAttribute("metaS",auxAR2.getMetaStart());
+		model.addAttribute("metaF",auxAR2.getMetaFinish());
+		model.addAttribute("max",auxAR2.getMaximum());
+        return "user/home";
     }
 
 	@RequestMapping(value="/default", method = RequestMethod.GET)

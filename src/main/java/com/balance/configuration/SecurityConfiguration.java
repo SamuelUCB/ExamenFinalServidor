@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/getPulse/**").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/send-mail").permitAll()
-                .antMatchers("/forgotpasswordconfirm/**").permitAll()
+                .antMatchers("/forgotpasswordconfirm").permitAll()
                 .antMatchers("/changepassword").permitAll()
                 .antMatchers("/changepasswordyes").permitAll()
                 .antMatchers("/images/**").permitAll()

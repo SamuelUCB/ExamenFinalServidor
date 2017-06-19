@@ -69,41 +69,39 @@ public class TokenController {
             userService.saveUserEdited(userExist);
 
             //Enviar mail
-            smtpMailSender.send(text1, "Balance Fitness Tracker: Recupera tu cuenta", "¡Hola, "+userExist.getName()+"! Recibimos una solicitud para recuperar su cuenta, clickee en este <a href='http://localhost:8080/forgotpasswordconfirm/" + stringToken +" ' >enlace</a> para recuperar su cuenta. Si no es as[i ignore este mensaje.<br></br> Gracias por usar Balance Fitness Tracker.");
+            smtpMailSender.send(text1, "Balance Fitness Tracker: Recupera tu cuenta", "¡Hola, "+userExist.getName()+"! Recibimos una solicitud para recuperar su cuenta, ingrese este codigo: "+ stringToken + " en el siguiente <a href='http://localhost:8080/forgotpasswordconfirm' >enlace</a> para recuperar su cuenta. Si no es así ignore este mensaje.<br></br> Gracias por usar Balance Fitness Tracker.");
             return "redirect:/";
         }
         return "redirect:/forgotpassword";
     }
 
-    @RequestMapping(value="/forgotpasswordconfirm/{tokenS}", method = RequestMethod.GET)
-    public String changepassword(@PathVariable String tokenS) {
-        Token token=tokenService.findTokenByToken(tokenS);
-
-        Date date_verification=new Date();
-
-        if(token!=null && token.getActive()==true && date_verification.before(token.getExpired_date())){
-            User user=userService.getUserById(token.getUser_creator_id());
-            if(user!=null && user.getToken().getId()==token.getId()){
-                return "changepassword";
-            }
-            return "redirect:/";
-        }
-        return "redirect:/";
+    @RequestMapping(value="/forgotpasswordconfirm", method = RequestMethod.GET)
+    public String changepassword() {
+        return "changepassword";
     }
 
     @RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-    public String changePasswordInForgot(String email,String password) {
+    public String changePasswordInForgot(String email,String codigo) {
         User userExists = userService.findUserByEmail(email);
         if (userExists != null) {
             //  Encriptando password
-            userExists.setPassword(bCryptPasswordEncoder.encode(password));
-            userService.saveUserEdited(userExists);
-            //deshabilitando token
-            Token t=tokenService.getTokenById(userExists.getToken().getId());
-            t.setActive(false);
-            tokenService.saveToken(t);
-            return "redirect:/";
+            Token t=tokenService.findTokenByToken(codigo);
+            if(t!=null && t.getActive()==true){
+                Date dateverification=new Date();
+                if(t.getExpired_date().after(dateverification)){
+                    if(t.getUser_creator_id()==userExists.getId()){
+                        userExists.setPassword(bCryptPasswordEncoder.encode(codigo));
+                        userService.saveUserEdited(userExists);
+                        t.setActive(false);
+                        tokenService.saveToken(t);
+                        return "redirect:/";
+                    }
+                    return "access-denied";
+                }
+                return "access-denied";
+            }
+            return "access-denied";
         }
-        return "redirect:changepasswordyes";
+        return "access-denied";
     }
 }
