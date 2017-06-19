@@ -66,6 +66,10 @@
 
     <script th:inline="javascript">
         var idValue = [[${id}]];
+        var metaSValue = [[${metaStart}]];
+        var metaFValue = [[${metaFinish}]];
+        var maximum = [[${max}]];
+
 
         function updateSteps(){
             $.getJSON( "/getSteps/" + idValue, function( data ) {
@@ -85,9 +89,32 @@
             });
         }
 
-        function updatePulse(){
+      function updatePulse(){
             $.getJSON( "/getPulse/" + idValue, function( data ) {
-                $('#bpm').html(data.bpm);
+              $('#bpm').html(data.bpm);
+                var bpm=data.bpm;
+                if(data.bpm > maximum){
+                        $('#bpm').removeClass("label-warning")
+                        $('#bpm').removeClass("label-success")
+                        $('#bpm').addClass("label-danger");
+                }else{
+                    if(data.bpm >= metaSValue){
+                        if(!(data.bpm>metaFValue)){
+                            $('#bpm').removeClass("label-warning")
+                            $('#bpm').removeClass("label-danger")
+                            $('#bpm').addClass("label-success");
+                        }else{
+                             $('#bpm').removeClass("label-success")
+                             $('#bpm').removeClass("label-danger")
+                             $('#bpm').addClass("label-warning");
+
+                        }
+                    }else{
+                             $('#bpm').removeClass("label-success")
+                             $('#bpm').removeClass("label-danger")
+                             $('#bpm').addClass("label-warning");
+                    }
+                }
             });
         }
 
@@ -134,7 +161,7 @@
             <div class="thumbnail">
                 <div class="caption">
                     <img src="/images/pulse.png" alt="pulse" width="242" height="200"></img>
-                    <h3>Ritmo cardiaco: <span id="bpm" class="label label-warning" th:text="${countBpm}">countBpm</span></h3>
+                    <h3>Ritmo cardiaco: <span id="bpm" class="label" th:text="${countBpm}">countBpm</span></h3>
                 </div>
             </div>
         </div>
