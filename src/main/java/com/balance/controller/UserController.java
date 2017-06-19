@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -28,10 +30,16 @@ public class UserController {
     private StepsHistoryService stepsHistoryService;
     private LocationHistoryService locationHistoryService;
     private AgeRangeService ageRangeService;
+    private StairHistoryService stairHistoryService;
 
     @Autowired
     public void setAgeRangeService(AgeRangeService ageRangeService){
         this.ageRangeService=ageRangeService;
+    }
+
+    @Autowired
+    public void setStairHistoryService(StairHistoryService stairHistoryService) {
+        this.stairHistoryService = stairHistoryService;
     }
 
     @Autowired
@@ -553,5 +561,61 @@ public class UserController {
 
 
         return "limited/mapDayLocations";
+    }
+
+    // ----------------------------------------------------------
+
+    @RequestMapping(value = "/user/StairHistory", method = RequestMethod.GET)
+    public String getStairsHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+
+        Iterator<StairHistory> iterator = stairHistoryService.listAllStairHistory().iterator();
+        ArrayList<StairHistory> resp = new ArrayList<StairHistory>();
+        while(iterator.hasNext()){
+            StairHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("stairs",resp);
+        return "limited/stairsHistory";
+    }
+
+    @RequestMapping(value = "/user/StairHistory", method = RequestMethod.POST)
+    public String getStairsHistory(Model model, String inicio, String ultimo) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        try {
+            Date fechaInicio = formatter.parse(inicio);
+            Date fechaFinal = formatter.parse(ultimo);
+            Iterator<StairHistory> iterator = stairHistoryService.listAllStairHistory().iterator();
+            ArrayList<StairHistory> resp = new ArrayList<StairHistory>();
+            while(iterator.hasNext()){
+                StairHistory aux = iterator.next();
+                if(aux.getUser().equals(user.getId())) {
+                    if(aux.getDate().after(fechaInicio) && aux.getDate().before(fechaFinal)) {
+                        resp.add(aux);
+                    }
+                }
+            }
+            model.addAttribute("user",user);
+            model.addAttribute("stairs",resp);
+            return "limited/stairsHistory";
+        } catch(ParseException p) {
+            Iterator<StairHistory> iterator = stairHistoryService.listAllStairHistory().iterator();
+            ArrayList<StairHistory> resp = new ArrayList<StairHistory>();
+            while(iterator.hasNext()){
+                StairHistory aux = iterator.next();
+                if(aux.getUser().equals(user.getId())) {
+                    resp.add(aux);
+                }
+            }
+            model.addAttribute("user",user);
+            model.addAttribute("stairs",resp);
+            return "limited/stairsHistory";
+        }
     }
 }

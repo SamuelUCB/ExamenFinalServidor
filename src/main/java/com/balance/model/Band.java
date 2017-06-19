@@ -21,6 +21,24 @@ public class Band {
     private Integer user;
     private Date fecha_evento;
     private String intensidad;
+    private Integer cantidad;
+    private Integer tipo;
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
 
     public Integer getBpm() {
         return bpm;

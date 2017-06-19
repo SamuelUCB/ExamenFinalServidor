@@ -8,7 +8,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi1Rsl51hkfmrTe9-YShmlWMGn3bknbMA&amp;callback=myMap"></script>
     <link href="/css/homeLimited.css" th:href="@{/css/homeLimited.css}" rel="stylesheet" media="screen"/>
 </head>
-<body >
+<body>
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -26,6 +26,7 @@
             <ul class="nav navbar-nav">
 
                 <li><a th:href="${'/user/profile/'}">Ver perfil</a></li>
+                <li><a th:href="${'/user/StairHistory/'}">Historial de escaleras</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Historiales<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -90,6 +91,12 @@
             });
         }
 
+        function updateStair() {
+            $.getJSON( "/getStairCount/" + idValue, function( data ) {
+                $('#stair').html(data.cantidad);
+            });
+        }
+
         function updatePulse(){
             $.getJSON( "/getPulse/" + idValue, function( data ) {
                 $('#bpm').html(data.bpm);
@@ -141,6 +148,7 @@
             updateDistance();
             updateCalories();
             updatePulse();
+            updateStair();
             mapaUpdate++;
             if(mapaUpdate > 4) {
                 updateMap();
@@ -235,6 +243,8 @@
             </div>
         </div>
     </div>
+
+    <h3 style="background-color:green;">Cantidad de escalones del dia: <span id="stair" class="label" th:text="0">countBpm</span></h3>
 
     <div class="panel panel-default">
         <div class="panel-heading">

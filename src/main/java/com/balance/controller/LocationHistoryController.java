@@ -1,7 +1,9 @@
 package com.balance.controller;
 
 import com.balance.model.LocationHistory;
+import com.balance.model.StairHistory;
 import com.balance.service.LocationHistoryService;
+import com.balance.service.StairHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,16 @@ import java.util.List;
 public class LocationHistoryController {
     private LocationHistoryService locationHistoryService;
 
+    private StairHistoryService stairHistoryService;
+
     @Autowired
     public void setLocationHistoryService(LocationHistoryService locationHistoryService) {
         this.locationHistoryService = locationHistoryService;
+    }
+
+    @Autowired
+    public void setStairHistoryService(StairHistoryService stairHistoryService) {
+        this.stairHistoryService = stairHistoryService;
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)

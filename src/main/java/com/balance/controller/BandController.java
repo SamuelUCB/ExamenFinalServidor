@@ -2,6 +2,7 @@ package com.balance.controller;
 
 import com.balance.model.*;
 import com.balance.service.*;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,16 @@ public class BandController {
     private PulseHistoryService pulseHistoryService;
     private StepsHistoryService stepsHistoryService;
     private LocationHistoryService locationHistoryService;
+    private StairHistoryService stairHistoryService;
 
     @Autowired
     public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
         this.stepsHistoryService = stepsHistoryService;
+    }
+
+    @Autowired
+    public void setStairHistoryService(StairHistoryService stairHistoryService) {
+        this.stairHistoryService = stairHistoryService;
     }
 
     @Autowired
@@ -69,7 +76,24 @@ public class BandController {
         stepsHistoryService.saveStepsHistory(new StepsHistory(band.getSteps(), band.getDistance(), band.getUser(), band.getFecha_registro()));
         locationHistoryService.saveLocationHistory(new LocationHistory(band.getLatitude(), band.getLongitude(), band.getUser(), band.getFecha_registro()));
         bandService.saveBand(band);
-
+        if(band.getCantidad() != null && band.getTipo() != null) {
+            if(band.getCantidad() > 0 && band.getCantidad() < 1000) {
+                if(band.getTipo() == 0 || band.getTipo() == 1) {
+                    StairHistory guardar = new StairHistory();
+                    guardar.setCantidad(band.getCantidad());
+                    guardar.setTipo(band.getTipo());
+                    guardar.setDate(band.getFecha_registro());
+                    guardar.setUser(band.getUser());
+                    stairHistoryService.saveStairHistory(guardar);
+                }
+                else {
+                    System.out.println("NO SE GUARDO PORQUE EL TIPO ES ERRONEO");
+                }
+            }
+            else {
+                System.out.println("NO SE GUARDO LOS VALORES NO SE CUMPLEN");
+            }
+        }
         return band;
     }
 
